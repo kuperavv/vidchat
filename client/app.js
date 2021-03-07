@@ -2,7 +2,7 @@ import React from 'react';
 
 import Navbar from './components/navbar';
 import Routes from './routes';
-import Video from './components/video';
+import Video from './components/videochat';
 
 const App = () => {
   return (

@@ -58,21 +58,21 @@ const io = require('socket.io')(server);
 
 module.exports = server;
 
-let broadcaster;
+// let broadcaster;
 
 io.sockets.on('error', (e) => console.log(e));
 io.sockets.on('connection', (socket) => {
-  socket.on('broadcaster', (id) => {
-    broadcaster = socket.id;
-    console.log('broadcaster', id);
-    socket.broadcast.emit('broadcaster', socket.id);
+  socket.on('broadcaster', (id, type) => {
+    // broadcaster = socket.id;
+    // console.log('broadcaster', id);
+    socket.broadcast.emit('broadcaster', socket.id, type);
   });
   // socket.on('watcher', () => {
   //   socket.to(broadcaster).emit('watcher', socket.id);
   // });
-  socket.on('offer', (id, message) => {
+  socket.on('offer', (id, message, type) => {
     console.log('offer', id);
-    socket.to(id).emit('offer', socket.id, message);
+    socket.to(id).emit('offer', socket.id, message, type);
   });
   socket.on('answer', (id, message) => {
     socket.to(id).emit('answer', socket.id, message);
@@ -82,6 +82,6 @@ io.sockets.on('connection', (socket) => {
     socket.to(id).emit('candidate', socket.id, message);
   });
   socket.on('disconnect', () => {
-    socket.to(broadcaster).emit('disconnectPeer', socket.id);
+    socket.broadcast.emit('disconnectPeer', socket.id);
   });
 });
